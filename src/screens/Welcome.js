@@ -1,16 +1,8 @@
-import { 
-  ImageBackground,
-  Pressable, 
-  Text, 
-  TouchableOpacity, 
-  View, 
-  Image,
-} from 'react-native'
 import React from 'react'
-
-import {welcomeKids, lollipopAnimated, rabbitAnimated} from "../constants/images"
+import { ImageBackground, Text, TouchableOpacity, View, Image, } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+import {welcomeKids, lollipopAnimated, rabbitAnimated} from "../constants/images"
 
 
 const Welcome = ({navigation}) => {
@@ -20,10 +12,8 @@ const Welcome = ({navigation}) => {
 
         {/* Top Container */}
          <View className="flex-[4] border-2 border-red-700 w-[100%] items-center justify-center">
-          {/* <Text>Flex1</Text> */}
-          <Image style={{ width: '50%', height: '50%', resizeMode:"contain"}}
-                 source={rabbitAnimated} 
-                  />
+           {/* <Text>Flex1</Text> */}
+           {/* <Image style={{ width: '50%', height: '50%', resizeMode:"contain"}} source={rabbitAnimated} /> */}
          </View>
 
         {/* Bottom Container */}

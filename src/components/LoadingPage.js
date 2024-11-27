@@ -1,56 +1,62 @@
-// import React, { useState, useEffect, useRef } from 'react';
-// import { View, Animated, Image } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Animated, Image } from 'react-native';
 
-// import {dancingPenguin} from "../constants/images"
-// import styles from '../constants/styles';
+import {rabbitAnimated} from "../constants/images"
 
+const LoadingPage = () => {
+  const [loading, setLoading] = useState(true);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    const fadeIn = Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000, 
+      useNativeDriver: false,
+    });
 
+    const fadeOut = Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 2000, 
+      useNativeDriver: false,
+    });
 
-// const LoadingPage = () => {
-//   const [loading, setLoading] = useState(true);
-//   const fadeAnim = useRef(new Animated.Value(0)).current;
+    const sequenceAnimation = Animated.sequence([fadeIn, fadeOut]);
 
-//   useEffect(() => {
-//     const fadeIn = Animated.timing(fadeAnim, {
-//       toValue: 1,
-//       duration: 1000, 
-//       useNativeDriver: false,
-//     });
-
-//     const fadeOut = Animated.timing(fadeAnim, {
-//       toValue: 0,
-//       duration: 2000, 
-//       useNativeDriver: false,
-//     });
-
-//     const sequenceAnimation = Animated.sequence([fadeIn, fadeOut]);
-
-//     const loop = () => {
-//       Animated.loop(sequenceAnimation).start(() => {
+    const loop = () => {
+      Animated.loop(sequenceAnimation).start(() => {
         
-//       });
-//     };
+      });
+    };
 
-//     if (loading) {
-//       loop();
-//     }
+    if (loading) {
+      loop();
+    }
 
-//     return () => {
-//       fadeAnim.removeAllListeners();
-//     };
-//   }, [fadeAnim, loading]);
+    return () => {
+      fadeAnim.removeAllListeners();
+    };
+  }, [fadeAnim, loading]);
 
-//   return (
-//     <View style={styles.loadingContainer}>
+  return (
+    <View 
+    // style={{borderWidth:2, borderColor:"lime", flex:1, alignItems:"center", justifyContent:"center"}}
+    className="flex-1 items-center justify-center border-2 border-lime-400"
+    >
 
-//       <Animated.View style={[styles.loadingAnimatedContainer, { opacity: fadeAnim }]}>
-//         <Image style={styles.loadingImage} source={dancingPenguin}/>    
-//       </Animated.View>
+      {/* <Animated.View style={[styles.loadingAnimatedContainer, { opacity: fadeAnim }]}>
+        <Image style={{width:300, height:300, resizeMode:"cover"}} source={rabbitAnimated}/>    
+      </Animated.View> */}
 
-//     </View>
-//   );
-// };
+     <Animated.View className="flex-1 w-full items-center justify-center border-2 border-yellow-300 pl-10" 
+                    style={[{ opacity: fadeAnim }]}>
+        {/* <Image className="w-[300px] h-[300px] object-cover" source={rabbitAnimated} /> */}
+        <Image className="w-[300px] h-[300px] object-cover" source={rabbitAnimated} />
+     </Animated.View>
 
 
-// export default LoadingPage;
+    </View>
+  );
+};
+
+
+export default LoadingPage;
