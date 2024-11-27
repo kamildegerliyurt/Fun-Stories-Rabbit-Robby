@@ -7,18 +7,23 @@ import StoryDetails from './src/screens/StoryDetails'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+import { ThemeProvider } from "./src/constants/ThemeContext"
+
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Welcome'
-                       screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Welcome" component={Welcome} />
-        <Stack.Screen name="StoryHome" component={StoryHome} />
-        <Stack.Screen name="StoryDetails" component={StoryDetails} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='Welcome'
+                        screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Welcome" component={Welcome} />
+          <Stack.Screen name="StoryHome" component={StoryHome} />
+          <Stack.Screen name="StoryDetails" component={StoryDetails} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
   )
 }
 
