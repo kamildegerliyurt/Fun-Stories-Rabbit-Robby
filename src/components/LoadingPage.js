@@ -49,8 +49,9 @@ const LoadingPage = () => {
 
      <Animated.View className="flex-1 w-full items-center justify-center border-2 border-yellow-300 pl-10" 
                     style={[{ opacity: fadeAnim }]}>
-        {/* <Image className="w-[300px] h-[300px] object-cover" source={rabbitAnimated} /> */}
+        
         <Image className="w-[300px] h-[300px] object-cover" source={rabbitAnimated} />
+
      </Animated.View>
 
 

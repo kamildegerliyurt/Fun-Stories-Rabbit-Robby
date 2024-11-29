@@ -28,11 +28,18 @@ const HomePagePinwheelOut = PinwheelOut;
 //-----------------------------------
 
   return (
-    <View style={{flex:1, width:"100%",borderWidth:2,alignItems:"center", justifyContent:"center",borderColor:"dodgerblue",}}>
+    <View style={{
+      // flex:1,
+      flex:1,   //Burası "1" di aşşaya doğru itiyordu acaba hata ondanmı diye "7" yaptım
+      width:"100%",
+      borderWidth:2,
+      alignItems:"center", 
+      justifyContent:"center",
+      borderColor:"dodgerblue",}}>
       {/* <Text className="text-white font-bold">StoryItem</Text> */}
       <FlatList 
         data={productData}
-        contentContainerStyle={{ borderWidth:2,  alignItems: "center", justifyContent: "center" }}
+        contentContainerStyle={{ borderWidth:2,  alignItems: "center", justifyContent: "center" }} //Bunu kaldırınca "Resimler KAYIYOR"
         numColumns={(2)}
         showsVerticalScrollIndicator={false}
         alwaysBounceVertical={false}
@@ -61,7 +68,8 @@ const HomePagePinwheelOut = PinwheelOut;
                                   flex:2, 
                                   borderWidth:2,         //Burasını kaldırınca "Resim Tam Oturacak"
                                   borderColor:"blue", 
-                                  width:"100%", 
+                                  width:"100%",
+                                  height:"100%", //Burasını "Aşşa kayıyor diye ekledim duruma göre kaldır başlangıçta YOKTU"
                                   alignItems:"center", 
                                   justifyContent:"center",
                                 //   borderRadius:20, 
@@ -78,19 +86,20 @@ const HomePagePinwheelOut = PinwheelOut;
 
                     {/* Text */}
                     <View style={{
-                                  flex:1, 
+                                  flex:1, //Bunları kaldırdım "Yapıları aşşa itiyor" diye tekrar eklenebilir
                                   borderWidth:2, 
                                   borderColor:"lime", 
-                                  width:"100%", 
+                                  width:"100%",
+                                  height:"100%", //Burasını "Aşşa kayıyor diye ekledim duruma göre kaldır başlangıçta YOKTU" 
                                   alignItems:"center", 
                                   justifyContent:"center"
                                   }}>
                         <Text style={{
-                                   flex:1,
+                                  //  flex:1, //Bunları kaldırdım "Yapıları aşşa itiyor" diye tekrar eklenebilir
                                    width:"100%",
                                    borderWidth:2,
                                    borderColor:"yellow",
-                                   fontSize:16,
+                                   fontSize:14,
                                    fontWeight:"bold",
                                    fontStyle:"italic",
                                    textAlign:"center",
@@ -100,7 +109,8 @@ const HomePagePinwheelOut = PinwheelOut;
                                 //    textShadowRadius: 2,
                                 }}
                               numberOfLines={2}
-                              ellipsizeMode='tail'>{item.engTitle}
+                              ellipsizeMode='tail'
+                              >{item.engTitle}
                         </Text>
 
                     </View>

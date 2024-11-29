@@ -16,7 +16,19 @@ const storyRabbit9 = require("../../assets/images/homePageIcons/storyRabbit9.jpg
 const storyRabbit10 = require("../../assets/images/homePageIcons/storyRabbit10.jpg")
 // //-----------------------------------------------DetailsIcon
 const backButton = require("../../assets/images/detailsPageIcons/backButton.png")
+// //-----------------------------------------------Buttons
+const pinkPlayButton = require("../../assets/images/buttonIcons/pinkPlayButton.png")
+const pinkPauseButton = require("../../assets/images/buttonIcons/pinkPauseButton.png")
+const pinkRightButton = require("../../assets/images/buttonIcons/pinkRightButton.png")
+const pinkLeftButton = require("../../assets/images/buttonIcons/pinkLeftButton.png")
+
+const bluePlayButton = require("../../assets/images/buttonIcons/bluePlayButton.png")
+const bluePauseButton = require("../../assets/images/buttonIcons/bluePauseButton.png")
+const blueRightButton = require("../../assets/images/buttonIcons/blueRightButton.png")
+const blueLeftButton = require("../../assets/images/buttonIcons/blueLeftButton.png")
 // //-----------------------------------------------
+
+
 
 
 
@@ -40,6 +52,17 @@ export{
     storyRabbit10,
 
     backButton,
+
+    pinkPlayButton,
+    pinkPauseButton,
+    pinkRightButton,
+    pinkLeftButton,
+    bluePlayButton,
+    bluePauseButton,
+    blueRightButton,
+    blueLeftButton,
+
+
 }
 
 
