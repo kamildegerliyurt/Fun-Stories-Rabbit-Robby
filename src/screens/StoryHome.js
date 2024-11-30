@@ -42,10 +42,15 @@ const handleItemPress = (item) => {
             </View>
 
 
-            {/* Flatlist */}
+            {/* Flatlist */}  
+
             <View className="flex-[9] border-2 border-black w-[100%] items-center justify-center">
                 <StoryItem onItemPress={handleItemPress} />
-            </View>
+            </View>  
+
+
+            {/* Yukarıdaki "StoryItem" verisini  bulunduran "View" kaldırdım o itiyor olabilir aşşa diye duruma göre*/} 
+
 
 
 

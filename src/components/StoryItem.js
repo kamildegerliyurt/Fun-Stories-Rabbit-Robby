@@ -30,7 +30,7 @@ const HomePagePinwheelOut = PinwheelOut;
   return (
     <View style={{
       // flex:1,
-      flex:1,   //Burası "1" di aşşaya doğru itiyordu acaba hata ondanmı diye "7" yaptım
+      flex:9,   //Burası "1" di aşşaya doğru itiyordu acaba hata ondanmı diye "9" yaptım
       width:"100%",
       borderWidth:2,
       alignItems:"center", 
