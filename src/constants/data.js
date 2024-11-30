@@ -72,7 +72,7 @@ const data = {
         },
         {
             id: 4,
-            engTitle: "The Marshmallow Planet",
+            engTitle: "The Marshmallow Planet...",
             trTitle: "Marshmallow Gezegeni",
             engSound: marshPlanetEN,
             trSound: marshPlanetTR,
@@ -92,7 +92,7 @@ const data = {
         },
         {
             id: 6,
-            engTitle: "The Secret of Star Island",
+            engTitle: "The Secret of Star Island...",
             trTitle: "Yıldız Adasının Sırrı",
             engSound: starIslandEN,
             trSound: starIslandTR,

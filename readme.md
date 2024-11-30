@@ -57,6 +57,210 @@ npx expo install react-native-reanimated (Buna plugin falanda eklenecek buna bak
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { ImageBackground, Text, View, StatusBar } from 'react-native'
+
+
+import {welcomeKids} from "../constants/images"
+
+import {StoryItem, LoadingPage} from "../components/index"
+import { useNavigation } from '@react-navigation/native'
+
+const StoryHome = () => {
+//----------------------------------------
+const [loading, setLoading] = useState(false);
+//----------------------------------------
+const navigation = useNavigation();
+//----------------------------------------
+const handleItemPress = (item) => {
+  setLoading(true);
+  setTimeout(() => {
+    setLoading(false);
+    navigation.navigate("StoryDetails", { data: item });
+  }, 2000); // Loading Time
+};
+//----------------------------------------
+
+
+
+  return (
+    <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={welcomeKids}>
+      
+      <StatusBar style="auto" />
+
+      {loading ? (<LoadingPage />) 
+               : (
+        <SafeAreaView className="border-2 border-lime-500 flex-1 items-center justify-center">
+
+            {/* Header */}
+            <View className="flex-[1] border-2 border-pink-500 w-[100%] items-center justify-center">
+              <Text style={{textShadowColor: "#a3a3a3",textShadowOffset: { height: 3 }, textShadowRadius: 2}}
+                    className="text-center font-bold text-[33px] text-cyan-50 italic">Stories
+              </Text>     
+            </View>
+
+
+            {/* Flatlist */}  
+
+            <View className="flex-[9] border-2 border-black w-[100%] items-center justify-center">
+                <StoryItem onItemPress={handleItemPress} />
+            </View>  
+
+
+            {/* Yukarıdaki "StoryItem" verisini  bulunduran "View" kaldırdım o itiyor olabilir aşşa diye duruma göre*/} 
+
+
+
+
+        </SafeAreaView>
+      )}
+
+    </ImageBackground>
+  )
+}
+
+export default StoryHome
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+import { FlatList, Text, View, RefreshControl, Pressable, Image } from 'react-native'
+import React, { useState, useEffect, useCallback } from 'react';
+
+import data from '../constants/data'
+import Animated, { BounceInDown, PinwheelOut } from 'react-native-reanimated';
+
+
+const StoryItem = (props) => {
+//-----------------------------------
+const [productData, setProductData] = useState([]);
+const [refreshing, setRefreshing] = useState(false);
+//-----------------------------------
+useEffect(() => {
+  setProductData(data.stories);
+    // console.log("Loaded Data:", data.stories);
+}, []);
+//-----------------------------------RefreshControl
+const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+}, []);
+//-----------------------------------
+const MyAnimatedButton = Animated.createAnimatedComponent(Pressable);
+const HomePageBounceInDown = BounceInDown.springify().damping(2).mass(3).stiffness(10);
+const HomePagePinwheelOut = PinwheelOut;
+//-----------------------------------
+
+  return (
+    <View style={{
+      // flex:1,
+      flex:9,   //Burası "1" di aşşaya doğru itiyordu acaba hata ondanmı diye "9" yaptım
+      width:"100%",
+      borderWidth:2,
+      alignItems:"center", 
+      justifyContent:"center",
+      borderColor:"dodgerblue",}}>
+      {/* <Text className="text-white font-bold">StoryItem</Text> */}
+      <FlatList 
+        data={productData}
+        contentContainerStyle={{ borderWidth:2,  alignItems: "center", justifyContent: "center" }} //Bunu kaldırınca "Resimler KAYIYOR"
+        numColumns={(2)}
+        showsVerticalScrollIndicator={false}
+        alwaysBounceVertical={false}
+        keyExtractor={(item) => item.id.toString()}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        renderItem={({item})=> {
+            return(
+                <MyAnimatedButton style={{
+                                          borderWidth:3,
+                                          borderColor:"red",
+                                          backgroundColor:"#F36555",
+                                        //   width:"45%", 
+                                          width:"45%", 
+                                          margin:10, 
+                                          alignItems:"center",
+                                          justifyContent:"center", 
+                                        //   borderRadius:20, 
+                                        }}
+                                  entering={HomePageBounceInDown}
+                                  exiting={HomePagePinwheelOut}
+                                  onPress={() => props.onItemPress(item)}
+                                  >
+
+                    {/* Resim gösterimi */}
+                    <View style={{
+                                  flex:2, 
+                                  borderWidth:2,         //Burasını kaldırınca "Resim Tam Oturacak"
+                                  borderColor:"blue", 
+                                  width:"100%",
+                                  height:"100%", //Burasını "Aşşa kayıyor diye ekledim duruma göre kaldır başlangıçta YOKTU"
+                                  alignItems:"center", 
+                                  justifyContent:"center",
+                                //   borderRadius:20, 
+                                  }}>
+                      <Image style={{
+                                     width:"100%",
+                                     height:190, 
+                                     resizeMode:"cover", 
+                                    //  borderRadius:20,
+                                     }} 
+                             source={item.image} />
+                    {/* <Image style={{width:"100%", height:190, resizeMode:"cover",  borderRadius:20,}} source={item.image} /> */}
+                    </View>
+
+                    {/* Text */}
+                    <View style={{
+                                  flex:1, //Bunları kaldırdım "Yapıları aşşa itiyor" diye tekrar eklenebilir
+                                  borderWidth:2, 
+                                  borderColor:"lime", 
+                                  width:"100%",
+                                  height:"100%", //Burasını "Aşşa kayıyor diye ekledim duruma göre kaldır başlangıçta YOKTU" 
+                                  alignItems:"center", 
+                                  justifyContent:"center"
+                                  }}>
+                        <Text style={{
+                                  //  flex:1, //Bunları kaldırdım "Yapıları aşşa itiyor" diye tekrar eklenebilir
+                                   width:"100%",
+                                   borderWidth:2,
+                                   borderColor:"yellow",
+                                   fontSize:14,
+                                   fontWeight:"bold",
+                                   fontStyle:"italic",
+                                   textAlign:"center",
+                                   padding:2,
+                                //    textShadowColor: "#d4d4d8",
+                                //    textShadowOffset: { height: 2, }, 
+                                //    textShadowRadius: 2,
+                                }}
+                              numberOfLines={2}
+                              ellipsizeMode='tail'
+                              >{item.engTitle}
+                        </Text>
+
+                    </View>
+
+                   
+
+
+                </MyAnimatedButton>
+            )
+        }}
+
+
+        />
+    </View>
+  )
+}
+
+export default StoryItem
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -67,8 +271,28 @@ import Entypo from '@expo/vector-icons/Entypo';
 
 
 import { useTheme } from "../constants/ThemeContext"
-import {backButton} from "../constants/images"
 import { useState } from 'react';
+import { BlurView } from 'expo-blur';
+
+import Slider from '@react-native-community/slider';
+
+
+import {
+  backButton,
+
+  pinkPlayButton,
+  pinkPauseButton,
+  pinkRightButton,
+  pinkLeftButton,
+  bluePlayButton,
+  bluePauseButton,
+  blueRightButton,
+  blueLeftButton,
+
+} from "../constants/images"
+
+
+import { Audio } from 'expo-av';
 
 
 const StoryDetails = ({route, navigation}) => {
@@ -76,9 +300,11 @@ const StoryDetails = ({route, navigation}) => {
 const { isDarkMode, toggleTheme } = useTheme();
 //-----------------------------------------
 const [currentPage, setCurrentPage] = useState(0);
-
+//-----------------------------------------
+const [isPlaying, setIsPlaying] = useState(false); // Yeni state
+//-----------------------------------------
 // Split text into pages
-const wordsPerPage = 70; // Bunu "50"di eğer bozulursa "50ye CEK"
+const wordsPerPage = 85; // Bunu "50"di eğer bozulursa "50ye CEK"
 const textArray = route.params.data.engText.split(" ");
 const totalPages = Math.ceil(textArray.length / wordsPerPage);
 
@@ -88,11 +314,15 @@ const getPageText = (pageIndex) => {
   return textArray.slice(start, end).join(" ");
 };
 //-----------------------------------------
+const togglePlayPause = () => {
+  setIsPlaying(!isPlaying); // Durumu değiştir
+};
+//-----------------------------------------
 
   return (
   <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={route.params.data.image}>
 
-      <SafeAreaView className="border-2 border-lime-500 bg-red-700 flex-1 items-center justify-center">
+      <SafeAreaView className="border-2 border-lime-500 flex-1 items-center justify-center">
          
           {/* Header */}
           <View className="flex-[1] flex-row border-2 border-yellow-500 bg-cyan-500 w-[100%] items-center justify-between px-2">
@@ -107,19 +337,15 @@ const getPageText = (pageIndex) => {
 
               </View>
 
-
-
               {/* Dark/Light Mode */}
               <View className="flex-[3] w-[100%] h-[100%] border-2 items-center justify-center">
 
                   <TouchableOpacity className="self-end bg-blue-500 p-1 rounded-full" onPress={toggleTheme}>
-                    {isDarkMode ? (<Ionicons name="sunny" size={45} color="#fbbf24" />) 
-                                : (<Entypo name="moon" size={45} color="#fbbf24" />)}
+                        {isDarkMode ? (<Ionicons name="sunny" size={45} color="#fbbf24" />) 
+                                    : (<Entypo name="moon" size={45} color="#fbbf24" />)}
                   </TouchableOpacity>
 
               </View>
-
-
 
 
           </View>
@@ -127,73 +353,108 @@ const getPageText = (pageIndex) => {
 
           {/* Story */}
           <View className="flex-[9] border-2 border-red-600 w-[100%] items-center justify-end">
+          
+ 
+              <BlurView className={`w-[100%] h-[60%] border-2 border-rose-400  rounded-t-2xl 
+                                    ${isDarkMode ? "bg-black/70" : "bg-yellow-400"}`}>
 
 
-              <View className={`w-[100%] h-[50%] border-2 rounded-t-2xl border-yellow-50 items-center justify-center ${isDarkMode ? "bg-gray-900" : "bg-amber-400"}`}>
+                      {/* Title Container */}
+                      <View className="flex-[1] w-[100%] rounded-t-2xl items-center justify-center border-2 border-blue-700">
+
+                          <Text className={`flex-[1] w-[100%] border-2 rounded-t-2xl border-orange-500 text-left pl-1 pt-1 text-[14px] font-bold 
+                                            ${isDarkMode ? "text-gray-200" : "text-gray-900"}`} 
+                                numberOfLines={1} 
+                                ellipsizeMode='tail'>{route.params.data.engTitle}
+                          </Text>
+                        
+                      </View>
 
 
-                  {/* Title Container */}
-                  <View className="flex-[1] w-[100%] rounded-t-2xl items-center justify-center border-2 border-blue-700">
-
-                      <Text className={`flex-[1] w-[100%] border-2 rounded-t-2xl border-orange-500 text-left pl-1 pt-1 text-[14px] font-bold 
-                                        ${isDarkMode ? "text-gray-200" : "text-gray-900"}`} 
-                            numberOfLines={1} 
-                            ellipsizeMode='tail'>{route.params.data.engTitle}
-                      </Text>
-                    
-                  </View>
-
-
-
-
-                  {/* Text Container */}
-                  <View className="flex-[6] w-[100%] items-center justify-center border-2 border-lime-300">
-                     
-                        {/* Text */}
-                        <View className="flex-[6] border-2 w-[100%] items-center justify-center">
-                            <Text  className={`text-[15px] font-bold px-[5px] 
-                                              ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}
-                                              // numberOfLines={9}
-                                              // ellipsizeMode='tail'
-                                              >{getPageText(currentPage)}
-                            </Text>
-
-                        </View>
-
-
-                        {/* Right/Left Buttons */}
-                        <View className="flex-[1] flex-row border-2 w-[100%] items-center justify-between px-[2px]">
-                  
-                                {/* Previous Page */}
-                                <TouchableOpacity   
-                                  onPress={() => {if (currentPage > 0) setCurrentPage(currentPage - 1);}}>
-                                    <Entypo name="arrow-bold-left" size={32} color={isDarkMode ? "#e5e7eb" : "#222831"}  />
-                                </TouchableOpacity>
-
-                                <Text className={`text-[14px] font-bold ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}>
-                                  {`${currentPage + 1} / ${totalPages}`}
+                      {/* Text Container */}
+                      <View className="flex-[6] w-[100%] items-center justify-center border-2 border-lime-300">
+                        
+                            {/* Text */}
+                            <View className="flex-[6] bg-rose-600 border-2 w-[100%] items-center justify-center">
+                                <Text  className={`text-[15px] font-bold px-[5px] border-2 border-white w-[100%] h-[100%]
+                                                  ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}
+                                                  // numberOfLines={9}
+                                                  // ellipsizeMode='tail'
+                                                  >{getPageText(currentPage)}
                                 </Text>
 
-                                {/* Next Page */}
-                                <TouchableOpacity 
-                                  onPress={() => {if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);}}>
-                                   <Entypo name="arrow-bold-right" size={32} color={isDarkMode ? "#e5e7eb" : "#222831"} />
+                            </View>
+
+
+                            {/* Right/Left Buttons */}
+                            <View className="flex-[1] flex-row border-2 w-[100%] items-center justify-between px-[2px]">
+                      
+                                    {/* Previous Page */}
+                                    <TouchableOpacity   
+                                      onPress={() => {if (currentPage > 0) setCurrentPage(currentPage - 1);}}>
+                                        <Entypo name="arrow-bold-left" size={32} color={isDarkMode ? "#e5e7eb" : "#222831"}  />
+                                    </TouchableOpacity>
+
+                                    <Text className={`text-[14px] font-bold ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}>
+                                      {`${currentPage + 1} / ${totalPages}`}
+                                    </Text>
+
+                                    {/* Next Page */}
+                                    <TouchableOpacity 
+                                      onPress={() => {if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);}}>
+                                      <Entypo name="arrow-bold-right" size={32} color={isDarkMode ? "#e5e7eb" : "#222831"} />
+                                    </TouchableOpacity>
+                                    
+                            </View>
+
+
+                      </View>
+
+
+                      {/* Sound Container */}
+                      <View className="flex-[2] w-[100%] items-center justify-center border-2 border-violet-800">
+
+                            {/* Slider */}
+                            <View style={{flex:1, width:"100%", borderWidth:2, borderColor:"blue",alignItems:"center", justifyContent:"center"}}>
+                                <Slider
+                                    style={{ flex:1, width: '100%', borderWidth:2, borderColor:"lime",}}
+                                    // minimumValue={0}
+                                    // maximumValue={duration}
+                                    // value={position}
+                                    minimumTrackTintColor="white"
+                                    maximumTrackTintColor="black"
+                                    thumbTintColor="red"
+                                    // onSlidingComplete={async (value) => {
+                                    //   if (!isPaused) {
+                                    //     await soundRef.current.setPositionAsync(value); 
+                                    //   }
+                                    // }}
+                                    // disabled={!sliderEnabled} 
+                                  />
+
+                            </View>
+
+
+                            {/* Sound Buttons */}
+                            <View style={{flex:2, width:"100%", flexDirection:"row", borderWidth:2, borderColor:"red",alignItems:"center", justifyContent:"space-evenly"}}>
+                        
+                                <Image style={{width:40, height:40}} source={isDarkMode ? blueLeftButton : pinkLeftButton} />
+                                <TouchableOpacity onPress={togglePlayPause}>
+                                    <Image style={{width: 45, height: 45}} 
+                                           source={isDarkMode ? (isPlaying ? bluePauseButton : bluePlayButton) 
+                                                              : (isPlaying ? pinkPauseButton : pinkPlayButton)} 
+                                    />
                                 </TouchableOpacity>
-                                
-                        </View>
+                                <Image style={{width:40, height:40}} source={isDarkMode ? blueRightButton : pinkRightButton}/>
+
+                       
+                            </View>        
 
 
-                  </View>
+                      </View>
+                      
 
-
-
-
-                  {/* Sound Container */}
-                  <View className="flex-[2] w-[100%] items-center justify-center border-2 border-violet-800">
-                    <Text>Selam</Text>
-                  </View>
-
-              </View>
+              </BlurView>
 
 
           </View>
@@ -210,6 +471,4 @@ const getPageText = (pageIndex) => {
 export default StoryDetails
 
 
-
-
-
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

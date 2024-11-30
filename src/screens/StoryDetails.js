@@ -28,11 +28,16 @@ import {
 } from "../constants/images"
 
 
+import { Audio } from 'expo-av';
+
+
 const StoryDetails = ({route, navigation}) => {
 //-----------------------------------------
 const { isDarkMode, toggleTheme } = useTheme();
 //-----------------------------------------
 const [currentPage, setCurrentPage] = useState(0);
+//-----------------------------------------
+const [isPlaying, setIsPlaying] = useState(false); // Yeni state
 //-----------------------------------------
 // Split text into pages
 const wordsPerPage = 85; // Bunu "50"di eğer bozulursa "50ye CEK"
@@ -43,6 +48,10 @@ const getPageText = (pageIndex) => {
   const start = pageIndex * wordsPerPage;
   const end = start + wordsPerPage;
   return textArray.slice(start, end).join(" ");
+};
+//-----------------------------------------
+const togglePlayPause = () => {
+  setIsPlaying(!isPlaying); // Durumu değiştir
 };
 //-----------------------------------------
 
@@ -166,7 +175,12 @@ const getPageText = (pageIndex) => {
                             <View style={{flex:2, width:"100%", flexDirection:"row", borderWidth:2, borderColor:"red",alignItems:"center", justifyContent:"space-evenly"}}>
                         
                                 <Image style={{width:40, height:40}} source={isDarkMode ? blueLeftButton : pinkLeftButton} />
-                                <Image style={{width:45, height:45}} source={isDarkMode ? bluePlayButton : pinkPlayButton} />
+                                <TouchableOpacity onPress={togglePlayPause}>
+                                    <Image style={{width: 45, height: 45}} 
+                                           source={isDarkMode ? (isPlaying ? bluePauseButton : bluePlayButton) 
+                                                              : (isPlaying ? pinkPauseButton : pinkPlayButton)} 
+                                    />
+                                </TouchableOpacity>
                                 <Image style={{width:40, height:40}} source={isDarkMode ? blueRightButton : pinkRightButton}/>
 
                        
@@ -174,6 +188,7 @@ const getPageText = (pageIndex) => {
 
 
                       </View>
+                      
 
               </BlurView>
 
