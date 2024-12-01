@@ -26,21 +26,21 @@ const handleItemPress = (item) => {
 
 
   return (
-    <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={welcomeKids}>
+    <ImageBackground className="flex-[1] w-[100%]" resizeMode='cover' source={welcomeKids}>
       
       <StatusBar style="auto" />
 
       {loading ? (<LoadingPage />) 
                : (
-        <SafeAreaView className="flex-1 items-center justify-center border-2 border-lime-500 ">
+        <SafeAreaView className="flex-[1] border-2 border-lime-500 items-center justify-center">
 
             
-            <View className="flex-[1] w-[100%] items-center justify-center border-2 border-blue-500">
+            <View className="flex-[1] border-2 border-blue-500 w-[100%] items-center justify-center">
 
                 {/* Header */}
-                <View style={{flex:1, borderWidth:2, backgroundColor:"red", width:"100%", alignItems:"center", justifyContent:"center"}}>
+                <View style={{flex:1, borderWidth:2, backgroundColor:"purple", width:"100%", alignItems:"center", justifyContent:"center"}}>
                     <Text style={{textShadowColor: "#a3a3a3",textShadowOffset: { height: 3 }, textShadowRadius: 2}}
-                          className="text-center font-bold text-[33px] text-cyan-50 italic">Stories
+                          className="text-[33px] font-bold italic text-center text-cyan-50">Stories
                     </Text>   
                 </View>
 

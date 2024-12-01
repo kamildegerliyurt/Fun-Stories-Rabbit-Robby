@@ -72,7 +72,7 @@ const data = {
         },
         {
             id: 4,
-            engTitle: "The Marshmallow Planet...",
+            engTitle: "The Marshmallow Planet",
             trTitle: "Marshmallow Gezegeni",
             engSound: marshPlanetEN,
             trSound: marshPlanetTR,
@@ -92,7 +92,7 @@ const data = {
         },
         {
             id: 6,
-            engTitle: "The Secret of Star Island...",
+            engTitle: "The Secret of Star Island",
             trTitle: "Yıldız Adasının Sırrı",
             engSound: starIslandEN,
             trSound: starIslandTR,
@@ -145,6 +145,27 @@ const data = {
   };
   
   export default data;
+
+
+
+//   const data = {
+//     stories: [
+//         {
+//             id: 1,
+//             engTitle: "Amusement Park Tale: Cotton Candy and Adventure",
+//             trTitle: "Lunapark Masalı: Pamuk Şeker ve Macera",
+//             engSound: cottonCandyEN,
+//             trSound: cottonCandyTR,
+//             engText: "Once upon a time, in a distant land, there was a magnificent amusement park. This amusement park was a paradise that adorned every child's dreams. Giant Ferris wheels sparkling under colorful lights, thrilling roller coasters, and cheerful bumper cars, each providing delightful attractions that left huge smiles on the faces of children.  One late afternoon, as the sun slowly descended from behind the clouds, a small group of children arrived at the amusement park. Among them were Jack, carrying the excitement of a brave hero, Gwen, with her tiny heart beating fast, and Michael, ready to explore the world with curious eyes. Together, they began to explore the magical world of the amusement park.  First, they decided to ride the roller coasters. They boarded the colorful carts and began to whirl around at high speeds, their laughter rising to the sky as the wind rushed against their faces. Then, they hopped onto the bumper cars. With the cars crashing into each other, joyful screams and giggles filled the air. They lived every moment to the fullest.  Just then, the most adorable surprise of the amusement park occurred. A rabbit approached them with a large basket in its hands. Its eyes sparkled with innocent joy. The rabbit held a large basket filled with delicious cotton candy. Would you like some sweets? the rabbit asked, smiling.  The children's eyes lit up. They eagerly took the cotton candies from its hands, overflowing with joy. The rabbit waved at them cheerfully and returned to the magical world of the amusement park.  The children enjoyed the amusement park, eating cotton candy, their laughter filling the sky as they spent an unforgettable evening together. The amusement park left beautiful memories in their hearts that would last forever.  And so, as brave Jack, tiny Gwen, and curious Michael dashed from adventure to adventure in the magical world of the amusement park, they spent an evening filled with love from a rabbit and cotton candy.",
+//             trText: "Bir zamanlar, uzak bir ülkede, muhteşem bir lunapark vardı. Bu lunapark, her çocuğun hayalini süsleyen bir cennetti. Renkli ışıklar altında parlayan dev dönme dolaplar, heyecan verici hızlı trenler ve neşeli çarpışan arabalar, her biri çocukların yüzlerinde kocaman gülümsemeler bırakan keyifli atraksiyonlardı.  Bir akşamüstü, güneş bulutların arasından sıyrılıp yavaş yavaş batarken, küçük bir grup çocuk lunaparka geldi. Aralarında, cesur bir kahramanın heyecanını taşıyan Jack, minik kalbiyle atışan Gwen, ve meraklı gözleriyle dünyayı keşfetmeye hazır olan Michael vardı. Birlikte, lunaparkın büyülü dünyasını keşfetmeye başladılar.  Önce hızlı trenlere binmeye karar verdiler. Renkli vagonlara binip yüksek hızlarda turlamaya başladıklarında, rüzgarın yüzlerine çarpmasıyla kahkahaları gökyüzüne yükseldi. Sonra, çarpışan arabalara atladılar. Arabaların çarpışmasıyla neşeli çığlıklar ve kıkırdamalar yükseldi. Her anı dolu dolu yaşadılar.  Tam o sırada, lunaparkın en sevimli sürprizi gerçekleşti. Bir tavşan, ellerinde büyük bir sepetle çocukların yanına geldi. Gözleri, masum bir neşeyle parlıyordu. Tavşanın ellerinde büyük bir sepet vardı ve sepet dolusu lezzetli pamuk şekeriyle doluydu. Tatlı mı istersiniz? diye sordu tavşan gülümseyerek.  Çocukların gözleri parladı. Ellerinden aldıkları pamuk şekerleriyle sevinçle dolup taştılar. Tavşan, onlara neşeli bir şekilde el salladı ve lunaparkın büyülü dünyasına geri döndü.  Çocuklar, pamuk şekeri yiyerek lunaparkın tadını çıkardılar, kahkahaları gökyüzüne yükseldi ve birlikte unutulmaz bir akşam geçirdiler. Lunapark, onların kalplerinde sonsuza kadar sürecek güzel anılar bıraktı.  Ve böylece, cesur Jack, minik Gwen ve meraklı Michael, lunaparkın büyülü dünyasında maceradan maceraya koşarken, bir tavşanın sevgisi ve pamuk şekeriyle dolu bir akşam geçirdiler.",
+//             image: storyRabbit1,
+//         },       
+        
+   
+//     ],
+//   };
+  
+//   export default data;
 
 
 

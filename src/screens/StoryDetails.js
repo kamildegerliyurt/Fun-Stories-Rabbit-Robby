@@ -7,7 +7,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 
 
 import { useTheme } from "../constants/ThemeContext"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BlurView } from 'expo-blur';
 
 import Slider from '@react-native-community/slider';
@@ -15,7 +15,6 @@ import Slider from '@react-native-community/slider';
 
 import {
   backButton,
-
   pinkPlayButton,
   pinkPauseButton,
   pinkRightButton,
@@ -28,20 +27,30 @@ import {
 } from "../constants/images"
 
 
+
 import { Audio } from 'expo-av';
 
 
 const StoryDetails = ({route, navigation}) => {
 //-----------------------------------------
+const engTitle = route.params.data.engTitle
+const trTitle = route.params.data.trTitle
+const engSound = route.params.data.engSound
+const trSound = route.params.data.trSound
+const engText = route.params.data.engText
+const trText = route.params.data.trText
+const imageBackGround = route.params.data.image
+//-----------------------------------------
 const { isDarkMode, toggleTheme } = useTheme();
-//-----------------------------------------
 const [currentPage, setCurrentPage] = useState(0);
-//-----------------------------------------
-const [isPlaying, setIsPlaying] = useState(false); // Yeni state
+const [isPlaying, setIsPlaying] = useState(false); 
+
+const [currentTitle, setCurrentTitle] = useState(engTitle);
+const [currentText, setCurrentText] = useState(engText);
 //-----------------------------------------
 // Split text into pages
-const wordsPerPage = 85; // Bunu "50"di eğer bozulursa "50ye CEK"
-const textArray = route.params.data.engText.split(" ");
+const wordsPerPage = 55; // Bunu "50"di eğer bozulursa "50ye CEK"
+const textArray = currentText.split(" ");
 const totalPages = Math.ceil(textArray.length / wordsPerPage);
 
 const getPageText = (pageIndex) => {
@@ -54,9 +63,22 @@ const togglePlayPause = () => {
   setIsPlaying(!isPlaying); // Durumu değiştir
 };
 //-----------------------------------------
+// const soundData = route.params.data.engSound 
+// console.log("Data:", soundData)
+//-----------------------------------------
+const changeLanguage = () => {
+  if (currentTitle === engTitle) {
+    setCurrentTitle(trTitle);
+    setCurrentText(trText);
+  } else {
+    setCurrentTitle(engTitle);
+    setCurrentText(engText);
+  }
+};
+//-----------------------------------------
 
   return (
-  <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={route.params.data.image}>
+  <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={imageBackGround}>
 
       <SafeAreaView className="border-2 border-lime-500 flex-1 items-center justify-center">
          
@@ -96,23 +118,23 @@ const togglePlayPause = () => {
 
 
                       {/* Title Container */}
-                      <View className="flex-[1] w-[100%] rounded-t-2xl items-center justify-center border-2 border-blue-700">
+                      <View className="flex-[1] w-[100%] bg-blue-600 rounded-t-2xl items-center justify-center border-2 border-blue-700">
 
                           <Text className={`flex-[1] w-[100%] border-2 rounded-t-2xl border-orange-500 text-left pl-1 pt-1 text-[14px] font-bold 
                                             ${isDarkMode ? "text-gray-200" : "text-gray-900"}`} 
                                 numberOfLines={1} 
-                                ellipsizeMode='tail'>{route.params.data.engTitle}
+                                ellipsizeMode='tail'>{currentTitle}
                           </Text>
                         
                       </View>
 
 
                       {/* Text Container */}
-                      <View className="flex-[6] w-[100%] items-center justify-center border-2 border-lime-300">
+                      <View className="flex-[5] w-[100%] bg-green-300 items-center justify-center border-2 border-lime-300">
                         
                             {/* Text */}
-                            <View className="flex-[6] bg-rose-600 border-2 w-[100%] items-center justify-center">
-                                <Text  className={`text-[15px] font-bold px-[5px] border-2 border-white w-[100%] h-[100%]
+                            <View className="flex-[6] border-2 w-[100%] items-center justify-center">
+                                <Text  className={`text-[15px] font-bold px-[5px] border-2 border-red-500 w-[100%] h-[100%]
                                                   ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}
                                                   // numberOfLines={9}
                                                   // ellipsizeMode='tail'
@@ -148,12 +170,12 @@ const togglePlayPause = () => {
 
 
                       {/* Sound Container */}
-                      <View className="flex-[2] w-[100%] items-center justify-center border-2 border-violet-800">
+                      <View className="flex-[2] w-[100%] bg-white items-center justify-center border-2 border-violet-800">
 
                             {/* Slider */}
                             <View style={{flex:1, width:"100%", borderWidth:2, borderColor:"blue",alignItems:"center", justifyContent:"center"}}>
                                 <Slider
-                                    style={{ flex:1, width: '100%', borderWidth:2, borderColor:"lime",}}
+                                    style={{ flex:1, width: '100%', borderWidth:2, borderColor:"red",}}
                                     // minimumValue={0}
                                     // maximumValue={duration}
                                     // value={position}
@@ -168,20 +190,35 @@ const togglePlayPause = () => {
                                     // disabled={!sliderEnabled} 
                                   />
 
+                                 {/* Time-Duration */}
+                                <View style={{flexDirection:"row", borderWidth:2, borderColor:"black", width:"100%", alignItems:"center", justifyContent:"space-between"}}>
+                                  <Text>Start</Text>
+                                  <Text>Finish</Text>
+                                </View>
+
                             </View>
 
 
                             {/* Sound Buttons */}
-                            <View style={{flex:2, width:"100%", flexDirection:"row", borderWidth:2, borderColor:"red",alignItems:"center", justifyContent:"space-evenly"}}>
+                            <View style={{flex:1, paddingVertical:2, width:"100%", flexDirection:"row", borderWidth:2, borderColor:"red",alignItems:"center", justifyContent:"space-evenly"}}>
                         
-                                <Image style={{width:40, height:40}} source={isDarkMode ? blueLeftButton : pinkLeftButton} />
+                                <Image style={{width:35, height:35}} source={isDarkMode ? blueLeftButton : pinkLeftButton} />
+                                 
+                                  {/* Play/Pause */}
                                 <TouchableOpacity onPress={togglePlayPause}>
-                                    <Image style={{width: 45, height: 45}} 
-                                           source={isDarkMode ? (isPlaying ? bluePauseButton : bluePlayButton) 
-                                                              : (isPlaying ? pinkPauseButton : pinkPlayButton)} 
-                                    />
+                                      <Image source={isDarkMode ? (isPlaying ? bluePauseButton : bluePlayButton) 
+                                                                : (isPlaying ? pinkPauseButton : pinkPlayButton)} 
+                                             style={{width: 45, height: 45}}/>
                                 </TouchableOpacity>
-                                <Image style={{width:40, height:40}} source={isDarkMode ? blueRightButton : pinkRightButton}/>
+
+                                <Image style={{width:35, height:35}} source={isDarkMode ? blueRightButton : pinkRightButton}/>
+
+                                {/* Change Languages */}
+                                <TouchableOpacity 
+                                  style={{borderWidth:2, backgroundColor:"green", borderRadius:5,}}
+                                  onPress={changeLanguage}>
+                                     <Text>Change</Text>
+                                </TouchableOpacity>
 
                        
                             </View>        
@@ -205,4 +242,3 @@ const togglePlayPause = () => {
 }
 
 export default StoryDetails
-

@@ -28,115 +28,49 @@ const HomePagePinwheelOut = PinwheelOut;
 //-----------------------------------
 
   return (
-    <View style={{
-      // flex:1,
-      flex:9,   //Burası "1" di aşşaya doğru itiyordu acaba hata ondanmı diye "9" yaptım
-      width:"100%",
-      borderWidth:2,
-      borderColor:"lime",
-      backgroundColor:"blue",
-      alignItems:"center", 
-      justifyContent:"center",
-      }}>
-      {/* <Text className="text-white font-bold">StoryItem</Text> */}
+    <View className="flex-[9] w-[100%] border-2 border-lime-500 bg-red-300 items-center justify-center">
+
       <FlatList 
         data={productData}
-
-        // style={{
-        //   borderWidth:2, 
-        //   width:"100%", 
-        //   borderColor:"white",
-        // }} // Kayma OLURSAA "contentContainerStyle" olarak değiştir
-
-
+        // style={{borderWidth:2, width:"100%", borderColor:"white",}} // Kayma OLURSAA "contentContainerStyle" olarak değiştir
         contentContainerStyle={{ 
-          width:"100%",
+          // borderWidth:2, 
+          // borderColor:"red",
+          // width:"100%", 
           alignItems:"center", 
-          justifyContent:"center", 
-          borderWidth:2, 
-          borderColor:"white", 
-        }} //Bunu kaldırınca "Resimler KAYIYOR"
-
-        numColumns={(2)}
+          justifyContent:"center",
+          }} //Bunu kaldırınca "Resimler KAYIYOR"  
+        numColumns={2}
+        // numColumns={productData.length % 2 === 0 ? 2 : 1}
         // pagingEnabled
         showsVerticalScrollIndicator={false}
         alwaysBounceVertical={false}
         keyExtractor={(item) => item.id.toString()}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         renderItem={({item})=> {
+
            //---------------------------------------
             const image = item?.image;
             const title = item?.engTitle;       
            //---------------------------------------
 
-
             return(
-                <MyAnimatedButton style={{
-                                          borderWidth:3,
-                                          borderColor:"red",
-                                          backgroundColor:"#F36555",
-                                        //   width:"45%", 
-                                          width:"45%",
-                                          // margin:10,  
-                                          margin:8, 
-                                          alignItems:"center",
-                                          justifyContent:"center", 
-                                        //   borderRadius:20, 
-                                        }}
+                <MyAnimatedButton className="w-[45%] border-2 border-sky-400 bg-[#F36555] m-2.5 items-center justify-center"
                                   entering={HomePageBounceInDown}
                                   exiting={HomePagePinwheelOut}
-                                  onPress={() => props.onItemPress(item)}
-                                  >
+                                  onPress={() => props.onItemPress(item)}>
 
                     {/* Resim gösterimi */}
-                    <View style={{
-                                  flex:2, 
-                                  borderWidth:2,         //Burasını kaldırınca "Resim Tam Oturacak"
-                                  borderColor:"blue", 
-                                  width:"100%",
-                                  height:"100%", //Burasını "Aşşa kayıyor diye ekledim duruma göre kaldır başlangıçta YOKTU"
-                                  alignItems:"center", 
-                                  justifyContent:"center",
-                                //   borderRadius:20, 
-                                  }}>
-                      <Image style={{
-                                     width:"100%",
-                                     height:190, 
-                                     resizeMode:"cover", 
-                                    //  borderRadius:20,
-                                     }} 
-                             source={image} />
-                    {/* <Image style={{width:"100%", height:190, resizeMode:"cover",  borderRadius:20,}} source={item.image} /> */}
+                    <View className="flex-[2] w-[100%] h-[100%] items-center justify-center border-2 border-blue-700">
+                      <Image  className="w-[100%] h-[190px] object-cover" source={image} /> 
                     </View>
 
                     {/* Text */}
-                    <View style={{
-                                  flex:1, //Bunları kaldırdım "Yapıları aşşa itiyor" diye tekrar eklenebilir
-                                  borderWidth:2, 
-                                  borderColor:"lime", 
-                                  width:"100%",
-                                  height:"100%", //Burasını "Aşşa kayıyor diye ekledim duruma göre kaldır başlangıçta YOKTU" 
-                                  alignItems:"center", 
-                                  justifyContent:"center"
-                                  }}>
-                        <Text style={{
-                                  //  flex:1, //Bunları kaldırdım "Yapıları aşşa itiyor" diye tekrar eklenebilir
-                                   width:"100%",
-                                  //  height:"100%",
-                                   borderWidth:2,
-                                   borderColor:"yellow",
-                                   fontSize:14,
-                                   fontWeight:"bold",
-                                   fontStyle:"italic",
-                                   textAlign:"center",
-                                   paddingHorizontal:5,
-                                   padding:2,
-                                //    textShadowColor: "#d4d4d8",
-                                //    textShadowOffset: { height: 2, }, 
-                                //    textShadowRadius: 2,
-                                }}
-                              numberOfLines={2}   //Sorun burada!!!! [Burada "engTitle"lar bazılarında "TEK SATIR'a sığdığı için" bozuyor "RESİM AŞŞAYA KAYIYOR" ÇÖZÜM: "engTitle" verilerinin sonuna "..." ekledim ve "2" satıra uzamasını sağladım :D]
+                    <View className="flex-[1] w-[100%] h-[100%] items-center justify-center border-2 border-lime-500">
+                        <Text className="border-2 bg-violet-700 border-black text-[14px] font-bold italic text-center px-1 py-0.5"
+                              numberOfLines={2}  //Sorun burada!!!! [Burada "engTitle"lar bazılarında "TEK SATIR'a sığdığı için" bozuyor "RESİM AŞŞAYA KAYIYOR" ÇÖZÜM: "engTitle" verilerinin sonuna "..." ekledim ve "2" satıra uzamasını sağladım :D]
                               ellipsizeMode='tail'
+                              // style={{textShadowColor: "#d4d4d8",textShadowOffset: { height: 2 }, textShadowRadius: 2}}
                               >{title}
                         </Text>
 
