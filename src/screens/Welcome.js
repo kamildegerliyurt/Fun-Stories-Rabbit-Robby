@@ -14,7 +14,7 @@ const handleStartPress = () => {
    setTimeout(() => {
       setIsLoading(false); 
       navigation.navigate("StoryHome"); 
-    }, 3000); 
+    }, 5000); 
   };
 //-------------------------------------
 

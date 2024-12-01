@@ -502,7 +502,7 @@ const togglePlayPause = () => {
 export default StoryDetails
 
 
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ StoryDetails (00:14 Saat)
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ StoryDetails (Last)
 
 
 
@@ -541,22 +541,23 @@ import { Audio } from 'expo-av';
 
 const StoryDetails = ({route, navigation}) => {
 //-----------------------------------------
-const engSound = route.params.data.engSound
-const trSound = route.params.data.trSound
 const engTitle = route.params.data.engTitle
 const trTitle = route.params.data.trTitle
+const engSound = route.params.data.engSound
+const trSound = route.params.data.trSound
 const engText = route.params.data.engText
 const trText = route.params.data.trText
+const imageBackGround = route.params.data.image
 //-----------------------------------------
 const { isDarkMode, toggleTheme } = useTheme();
 const [currentPage, setCurrentPage] = useState(0);
-const [isPlaying, setIsPlaying] = useState(false); // Yeni state
+const [isPlaying, setIsPlaying] = useState(false); 
 
 const [currentTitle, setCurrentTitle] = useState(engTitle);
 const [currentText, setCurrentText] = useState(engText);
 //-----------------------------------------
 // Split text into pages
-const wordsPerPage = 50; // Bunu "50"di eğer bozulursa "50ye CEK"
+const wordsPerPage = 55; // Bunu "50"di eğer bozulursa "50ye CEK"
 const textArray = currentText.split(" ");
 const totalPages = Math.ceil(textArray.length / wordsPerPage);
 
@@ -582,10 +583,10 @@ const changeLanguage = () => {
     setCurrentText(engText);
   }
 };
-
+//-----------------------------------------
 
   return (
-  <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={route.params.data.image}>
+  <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={imageBackGround}>
 
       <SafeAreaView className="border-2 border-lime-500 flex-1 items-center justify-center">
          
@@ -641,7 +642,7 @@ const changeLanguage = () => {
                         
                             {/* Text */}
                             <View className="flex-[6] border-2 w-[100%] items-center justify-center">
-                                <Text  className={`text-[15px] font-bold px-[5px] border-2 border-white w-[100%] h-[100%]
+                                <Text  className={`text-[15px] font-bold px-[5px] border-2 border-red-500 w-[100%] h-[100%]
                                                   ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}
                                                   // numberOfLines={9}
                                                   // ellipsizeMode='tail'
@@ -710,19 +711,22 @@ const changeLanguage = () => {
                             <View style={{flex:1, paddingVertical:2, width:"100%", flexDirection:"row", borderWidth:2, borderColor:"red",alignItems:"center", justifyContent:"space-evenly"}}>
                         
                                 <Image style={{width:35, height:35}} source={isDarkMode ? blueLeftButton : pinkLeftButton} />
-                                  <TouchableOpacity onPress={togglePlayPause}>
-                                      <Image style={{width: 45, height: 45}} 
-                                             source={isDarkMode ? (isPlaying ? bluePauseButton : bluePlayButton) 
+                                 
+                                  {/* Play/Pause */}
+                                <TouchableOpacity onPress={togglePlayPause}>
+                                      <Image source={isDarkMode ? (isPlaying ? bluePauseButton : bluePlayButton) 
                                                                 : (isPlaying ? pinkPauseButton : pinkPlayButton)} 
-                                      />
-                                  </TouchableOpacity>
+                                             style={{width: 45, height: 45}}/>
+                                </TouchableOpacity>
+
                                 <Image style={{width:35, height:35}} source={isDarkMode ? blueRightButton : pinkRightButton}/>
 
-                                  <TouchableOpacity 
+                                {/* Change Languages */}
+                                <TouchableOpacity 
                                   style={{borderWidth:2, backgroundColor:"green", borderRadius:5,}}
                                   onPress={changeLanguage}>
                                      <Text>Change</Text>
-                                  </TouchableOpacity>
+                                </TouchableOpacity>
 
                        
                             </View>        

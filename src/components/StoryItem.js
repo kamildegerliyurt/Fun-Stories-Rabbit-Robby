@@ -43,9 +43,10 @@ const HomePagePinwheelOut = PinwheelOut;
         numColumns={2}
         // numColumns={productData.length % 2 === 0 ? 2 : 1}
         // pagingEnabled
+        // keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         alwaysBounceVertical={false}
-        keyExtractor={(item) => item.id.toString()}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         renderItem={({item})=> {
 

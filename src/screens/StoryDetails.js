@@ -1,6 +1,14 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ImageBackground, Text, View, TouchableOpacity, Image } from 'react-native'
+import { 
+  ImageBackground, 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  Image,
+  Modal,
+  Pressable,
+} from 'react-native'
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -11,24 +19,10 @@ import { useState, useEffect } from 'react';
 import { BlurView } from 'expo-blur';
 
 import Slider from '@react-native-community/slider';
-
-
-import {
-  backButton,
-  pinkPlayButton,
-  pinkPauseButton,
-  pinkRightButton,
-  pinkLeftButton,
-  bluePlayButton,
-  bluePauseButton,
-  blueRightButton,
-  blueLeftButton,
-
-} from "../constants/images"
-
-
-
 import { Audio } from 'expo-av';
+
+
+import {backButton,pinkPlayButton,pinkPauseButton,pinkRightButton,pinkLeftButton,bluePlayButton,bluePauseButton,blueRightButton,blueLeftButton,} from "../constants/images"
 
 
 const StoryDetails = ({route, navigation}) => {
@@ -41,12 +35,17 @@ const engText = route.params.data.engText
 const trText = route.params.data.trText
 const imageBackGround = route.params.data.image
 //-----------------------------------------
+const [useModel, setUseModel]= useState(false);
+//-----------------------------------------
 const { isDarkMode, toggleTheme } = useTheme();
 const [currentPage, setCurrentPage] = useState(0);
 const [isPlaying, setIsPlaying] = useState(false); 
 
 const [currentTitle, setCurrentTitle] = useState(engTitle);
 const [currentText, setCurrentText] = useState(engText);
+
+  // Language state
+  const [language, setLanguage] = useState('English'); // Default language
 //-----------------------------------------
 // Split text into pages
 const wordsPerPage = 55; // Bunu "50"di eğer bozulursa "50ye CEK"
@@ -66,14 +65,16 @@ const togglePlayPause = () => {
 // const soundData = route.params.data.engSound 
 // console.log("Data:", soundData)
 //-----------------------------------------
-const changeLanguage = () => {
-  if (currentTitle === engTitle) {
-    setCurrentTitle(trTitle);
-    setCurrentText(trText);
-  } else {
+const changeLanguage = (lang) => {
+  if (lang === 'English') {
     setCurrentTitle(engTitle);
     setCurrentText(engText);
+  } else {
+    setCurrentTitle(trTitle);
+    setCurrentText(trText);
   }
+  setLanguage(lang); // Update the selected language
+  setUseModel(false); // Close the modal after selection
 };
 //-----------------------------------------
 
@@ -213,12 +214,55 @@ const changeLanguage = () => {
 
                                 <Image style={{width:35, height:35}} source={isDarkMode ? blueRightButton : pinkRightButton}/>
 
-                                {/* Change Languages */}
-                                <TouchableOpacity 
-                                  style={{borderWidth:2, backgroundColor:"green", borderRadius:5,}}
-                                  onPress={changeLanguage}>
+
+                                {/* Model Open Button */}
+                                <TouchableOpacity style={{borderWidth:2, 
+                                                          backgroundColor:"green", 
+                                                          borderRadius:5,}}
+                                                  onPress={()=> setUseModel(true)}>
                                      <Text>Change</Text>
                                 </TouchableOpacity>
+
+
+
+                                {/* Model Container*/}
+                                <Modal visible={useModel} animationType="slide" transparent={true}>
+                                   <View style={{flex:1, paddingVertical:10, backgroundColor:"red", borderWidth:2, borderColor:"yellow", alignItems:"center", justifyContent:"center"}}>
+
+                                      {/* Model Close Button */}
+                                      <View style={{flex:1,marginBottom:10, borderWidth:2, borderColor:"blue", width:"95%",alignItems:"center", justifyContent:"center"}}>
+
+                                        <TouchableOpacity 
+                                        style={{borderWidth:2, backgroundColor:"white", borderRadius:5, width:"70%",alignItems:"center", justifyContent:"center"}}
+                                        onPress={() => setUseModel(false)}>
+                                          <Text>Close</Text>
+                                        </TouchableOpacity>
+
+                                      </View>
+
+
+                                      {/* Model Languages */}
+                                      <View 
+                                      style={{flex:9, paddingVertical:10, borderWidth:2, borderColor:"blue",width:"95%",alignItems:"center",}}>
+                                                                  
+                                            {/* English */}
+                                            <Pressable style={{ borderWidth: 2, margin: 5 }} onPress={() => changeLanguage('English')}>
+                                              <Text style={{ fontSize: 25, fontWeight: "bold", color: "#ffffff" }}>English</Text>
+                                            </Pressable>
+
+                                            {/* Turkish */}
+                                            <Pressable style={{ borderWidth: 2, margin: 5 }} onPress={() => changeLanguage('Turkish')}>
+                                              <Text style={{ fontSize: 25, fontWeight: "bold", color: "#ffffff" }}>Turkish</Text>
+                                            </Pressable>
+
+                                      </View>
+
+
+
+                                   </View>
+                                </Modal>
+
+
 
                        
                             </View>        
@@ -233,7 +277,8 @@ const changeLanguage = () => {
           </View>
 
 
-         
+
+        
       </SafeAreaView>
 
   </ImageBackground>
