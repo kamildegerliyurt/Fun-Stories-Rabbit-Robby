@@ -24,8 +24,6 @@ import {
     penLandEN,
     catPawEN,
     orangeFruitEN,
-    
-
     cottonCandyTR,
     catRescueTR,
     farmAdventureTR,
@@ -37,6 +35,7 @@ import {
     catPawTR,
     orangeFruitTR,
 } from "../constants/sounds"
+
 
 const data = {
     stories: [

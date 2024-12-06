@@ -1,53 +1,39 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { 
-  ImageBackground, 
-  Text, 
-  View, 
-  TouchableOpacity, 
-  Image,
-  Modal,
-  Pressable,
-} from 'react-native'
+import { View, Text, Image, Pressable, Modal, ImageBackground, TouchableOpacity  } from 'react-native'
+import Slider from '@react-native-community/slider';
+import { BlurView } from 'expo-blur';
+import { useTheme } from "../constants/ThemeContext"
+import { Audio } from 'expo-av';
+
+import { useFocusEffect } from '@react-navigation/native'; 
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
-
-
-import { useTheme } from "../constants/ThemeContext"
-import { useState, useEffect } from 'react';
-import { BlurView } from 'expo-blur';
-
-import Slider from '@react-native-community/slider';
-import { Audio } from 'expo-av';
-
 
 import {backButton,pinkPlayButton,pinkPauseButton,pinkRightButton,pinkLeftButton,bluePlayButton,bluePauseButton,blueRightButton,blueLeftButton,} from "../constants/images"
 
 
 const StoryDetails = ({route, navigation}) => {
 //-----------------------------------------
-const engTitle = route.params.data.engTitle
-const trTitle = route.params.data.trTitle
-const engSound = route.params.data.engSound
-const trSound = route.params.data.trSound
-const engText = route.params.data.engText
-const trText = route.params.data.trText
-const imageBackGround = route.params.data.image
-//-----------------------------------------
+const { engTitle, trTitle, engSound, trSound, engText, trText, image, } = route.params.data;
+// //-----------------------------------------
 const [useModel, setUseModel]= useState(false);
 //-----------------------------------------
 const { isDarkMode, toggleTheme } = useTheme();
 const [currentPage, setCurrentPage] = useState(0);
 const [isPlaying, setIsPlaying] = useState(false); 
-
+//-----------------------------------------
 const [currentTitle, setCurrentTitle] = useState(engTitle);
 const [currentText, setCurrentText] = useState(engText);
-
-  // Language state
-  const [language, setLanguage] = useState('English'); // Default language
+const [currentSound, setCurrentSound]= useState(engSound)
 //-----------------------------------------
-// Split text into pages
+const [language, setLanguage] = useState('English'); // Default language
+//-----------------------------------------
+const [sound, setSound] = useState(null); 
+const [duration, setDuration] = useState(0);
+const [position, setPosition] = useState(0)
+//-----------------------------------------
 const wordsPerPage = 55; // Bunu "50"di eğer bozulursa "50ye CEK"
 const textArray = currentText.split(" ");
 const totalPages = Math.ceil(textArray.length / wordsPerPage);
@@ -58,28 +44,104 @@ const getPageText = (pageIndex) => {
   return textArray.slice(start, end).join(" ");
 };
 //-----------------------------------------
-const togglePlayPause = () => {
-  setIsPlaying(!isPlaying); // Durumu değiştir
+const formatTime = (millis) => {
+  const minutes = Math.floor(millis / 60000);
+  const seconds = Math.floor((millis % 60000) / 1000);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 //-----------------------------------------
-// const soundData = route.params.data.engSound 
-// console.log("Data:", soundData)
+const togglePlayPause = async () => {
+  if (isPlaying) {
+    // Eğer zaten çalıyorsa, durdur.
+    setIsPlaying(false);
+    await sound.pauseAsync();
+  } else {
+    if (!sound) {
+      // Eğer ses yüklenmemişse, önce yükle.
+      await loadSound(); // Ses yükleniyor
+    } else {
+      // Ses bitti mi? Eğer bitti ise, pozisyonu sıfırla.
+      if (position >= duration || position === 0) {
+        await sound.setPositionAsync(0); // Pozisyonu sıfırla
+        setPosition(0); // Slider'ı sıfırla
+      }
+    }
+
+    // Oynatmaya başla
+    setIsPlaying(true);
+    await sound.playAsync();
+  }
+};
+
 //-----------------------------------------
-const changeLanguage = (lang) => {
+const loadSound = async () => {
+  const { sound, status } = await Audio.Sound.createAsync(
+    currentSound,
+    { shouldPlay: true },
+    (playbackStatus) => {
+      if (playbackStatus.isLoaded) {
+        setDuration(playbackStatus.durationMillis || 0);
+        setPosition(playbackStatus.positionMillis || 0);
+        
+        // Eğer ses bitti ise, durumu sıfırlıyoruz
+        if (playbackStatus.didJustFinish) {
+          setIsPlaying(false);
+          setPosition(0);
+        }
+      }
+    }
+  );
+  setSound(sound); // Ses nesnesini state'e atıyoruz
+};
+
+//-----------------------------------------
+const soundData = route.params.data.engSound 
+console.log("Data:", soundData)
+//-----------------------------------------
+const changeLanguage = async (lang) => {
+  if (sound) {
+    await sound.unloadAsync(); // Unload the current sound
+    setSound(null); // Reset the sound instance
+  }
+  setPosition(0); // Reset slider position
+  setDuration(0); // Reset duration
+  setIsPlaying(false); // Ensure the playback state is reset
+
   if (lang === 'English') {
     setCurrentTitle(engTitle);
     setCurrentText(engText);
+    setCurrentSound(engSound);
   } else {
     setCurrentTitle(trTitle);
     setCurrentText(trText);
+    setCurrentSound(trSound);
   }
   setLanguage(lang); // Update the selected language
-  setUseModel(false); // Close the modal after selection
+  setUseModel(false); // Close the modal
 };
+
+//-----------------------------------------
+useFocusEffect(
+  React.useCallback(() => {
+    return () => {
+      if (sound) {
+        sound.unloadAsync(); // Unload the sound when navigating away
+      }
+    };
+  }, [sound])
+);
+//-----------------------------------------
+useEffect(() => {
+  return sound ? () => {sound.unloadAsync();}
+               : undefined;}, 
+  [sound]);
 //-----------------------------------------
 
+
+
+
   return (
-  <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={imageBackGround}>
+  <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={image}>
 
       <SafeAreaView className="border-2 border-lime-500 flex-1 items-center justify-center">
          
@@ -135,7 +197,7 @@ const changeLanguage = (lang) => {
                         
                             {/* Text */}
                             <View className="flex-[6] border-2 w-[100%] items-center justify-center">
-                                <Text  className={`text-[15px] font-bold px-[5px] border-2 border-red-500 w-[100%] h-[100%]
+                                <Text  className={`text-[15px] font-bold px-[5px] border-2 bg-red-500 w-[100%] h-[100%]
                                                   ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}
                                                   // numberOfLines={9}
                                                   // ellipsizeMode='tail'
@@ -157,6 +219,7 @@ const changeLanguage = (lang) => {
                                     <Text className={`text-[14px] font-bold ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}>
                                       {`${currentPage + 1} / ${totalPages}`}
                                     </Text>
+                                    
 
                                     {/* Next Page */}
                                     <TouchableOpacity 
@@ -175,27 +238,22 @@ const changeLanguage = (lang) => {
 
                             {/* Slider */}
                             <View style={{flex:1, width:"100%", borderWidth:2, borderColor:"blue",alignItems:"center", justifyContent:"center"}}>
-                                <Slider
-                                    style={{ flex:1, width: '100%', borderWidth:2, borderColor:"red",}}
-                                    // minimumValue={0}
-                                    // maximumValue={duration}
-                                    // value={position}
-                                    minimumTrackTintColor="white"
-                                    maximumTrackTintColor="black"
-                                    thumbTintColor="red"
-                                    // onSlidingComplete={async (value) => {
-                                    //   if (!isPaused) {
-                                    //     await soundRef.current.setPositionAsync(value); 
-                                    //   }
-                                    // }}
-                                    // disabled={!sliderEnabled} 
-                                  />
+                            <Slider
+                                style={{ width: '90%', borderWidth: 2, padding: 2 }}
+                                minimumValue={0}
+                                maximumValue={duration}
+                                value={position}
+                                disabled={!sound} 
+                                onSlidingComplete={async (value) => {
+                                  await sound.setPositionAsync(value);
+                                }}
+                              />
 
-                                 {/* Time-Duration */}
-                                <View style={{flexDirection:"row", borderWidth:2, borderColor:"black", width:"100%", alignItems:"center", justifyContent:"space-between"}}>
-                                  <Text>Start</Text>
-                                  <Text>Finish</Text>
-                                </View>
+
+                              <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
+                                 <Text>{formatTime(position)}</Text>
+                                 <Text>{formatTime(duration)}</Text>
+                              </View>
 
                             </View>
 
@@ -203,16 +261,40 @@ const changeLanguage = (lang) => {
                             {/* Sound Buttons */}
                             <View style={{flex:1, paddingVertical:2, width:"100%", flexDirection:"row", borderWidth:2, borderColor:"red",alignItems:"center", justifyContent:"space-evenly"}}>
                         
-                                <Image style={{width:35, height:35}} source={isDarkMode ? blueLeftButton : pinkLeftButton} />
-                                 
-                                  {/* Play/Pause */}
-                                <TouchableOpacity onPress={togglePlayPause}>
-                                      <Image source={isDarkMode ? (isPlaying ? bluePauseButton : bluePlayButton) 
-                                                                : (isPlaying ? pinkPauseButton : pinkPlayButton)} 
-                                             style={{width: 45, height: 45}}/>
+
+                                {/* 10 Second Left Button */}
+                                <TouchableOpacity 
+                                  onPress={async () => {
+                                    const newPosition = Math.max(position - 10000, 0); // 10 seconds back, but no less than 0
+                                    await sound.setPositionAsync(newPosition); // Set new position
+                                    setPosition(newPosition); // Update the position state
+                                  }}
+                                >
+                                  <Image style={{ width: 35, height: 35 }} source={isDarkMode ? blueLeftButton : pinkLeftButton} />
                                 </TouchableOpacity>
 
-                                <Image style={{width:35, height:35}} source={isDarkMode ? blueRightButton : pinkRightButton}/>
+                                 
+                                {/* Play/Pause */}
+                                <TouchableOpacity onPress={() => togglePlayPause()}>
+                                      <Image 
+                                        source={isDarkMode 
+                                          ? (isPlaying ? bluePauseButton : bluePlayButton) 
+                                          : (isPlaying ? pinkPauseButton : pinkPlayButton)} 
+                                        style={{ width: 45, height: 45 }} 
+                                      />
+                                </TouchableOpacity>
+
+
+                               {/* 10 Second Right Button */}
+                                <TouchableOpacity 
+                                  onPress={async () => {
+                                    const newPosition = Math.min(position + 10000, duration); // 10 seconds forward, but no more than the duration
+                                    await sound.setPositionAsync(newPosition); // Set new position
+                                    setPosition(newPosition); // Update the position state
+                                  }}
+                                >
+                                  <Image style={{ width: 35, height: 35 }} source={isDarkMode ? blueRightButton : pinkRightButton} />
+                                </TouchableOpacity>
 
 
                                 {/* Model Open Button */}
@@ -222,7 +304,6 @@ const changeLanguage = (lang) => {
                                                   onPress={()=> setUseModel(true)}>
                                      <Text>Change</Text>
                                 </TouchableOpacity>
-
 
 
                                 {/* Model Container*/}
@@ -276,9 +357,8 @@ const changeLanguage = (lang) => {
 
           </View>
 
-
-
-        
+          
+       
       </SafeAreaView>
 
   </ImageBackground>

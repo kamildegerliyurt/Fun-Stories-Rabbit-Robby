@@ -26,7 +26,7 @@ const handleItemPress = (item) => {
 
 
   return (
-    <ImageBackground className="flex-[1] w-[100%]" resizeMode='cover' source={welcomeKids}>
+    <ImageBackground className="flex-[1] w-[100%]" source={welcomeKids} resizeMode="cover">
       
       <StatusBar style="auto" />
 
