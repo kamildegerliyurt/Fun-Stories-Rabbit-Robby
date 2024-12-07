@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
+import { ImageBackground, Text, TouchableOpacity, View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import {welcomeKids} from "../constants/images"
@@ -21,6 +21,9 @@ const handleStartPress = () => {
 
   return (
     <ImageBackground className="flex-1 w-[100%]" resizeMode='cover' source={welcomeKids}>
+
+        <StatusBar style="auto"/>
+        
         <SafeAreaView className="border-2 border-lime-500 flex-1 items-center justify-center">
             {isLoading ? ( <LoadingPage />) 
                        : (
