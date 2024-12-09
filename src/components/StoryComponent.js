@@ -1,38 +1,39 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, Pressable, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, Image, Modal, TouchableOpacity } from 'react-native'
 import Slider from '@react-native-community/slider';
 import { BlurView } from 'expo-blur';
 import { useTheme } from "../constants/ThemeContext"
 import { Audio } from 'expo-av';
-
 import { useFocusEffect } from '@react-navigation/native'; 
-
-// import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 
-import {pinkPlayButton,pinkPauseButton,pinkRightButton,pinkLeftButton,bluePlayButton,bluePauseButton,blueRightButton,blueLeftButton,} from "../constants/images"
+import {
+  pinkPlayButton,
+  pinkPauseButton,
+  pinkRightButton,
+  pinkLeftButton,
+  bluePlayButton,
+  bluePauseButton,
+  blueRightButton,
+  blueLeftButton,
+  languagesBook,
+} from "../constants/images"
 
 const StoryComponent = ({route}) => {
-//-----------------------------------------
 const { engTitle, trTitle, engSound, trSound, engText, trText, } = route.params.data;
-// //-----------------------------------------
 const [useModel, setUseModel]= useState(false);
-//-----------------------------------------
 const { isDarkMode, toggleTheme } = useTheme();
 const [currentPage, setCurrentPage] = useState(0);
 const [isPlaying, setIsPlaying] = useState(false); 
-//-----------------------------------------
 const [currentTitle, setCurrentTitle] = useState(engTitle);
 const [currentText, setCurrentText] = useState(engText);
 const [currentSound, setCurrentSound]= useState(engSound)
-//-----------------------------------------
-const [language, setLanguage] = useState('English'); // Default language
-//-----------------------------------------
+const [language, setLanguage] = useState('English'); 
 const [sound, setSound] = useState(null); 
 const [duration, setDuration] = useState(0);
 const [position, setPosition] = useState(0)
-//-----------------------------------------
-const wordsPerPage = 55; // Bunu "50"di eğer bozulursa "50ye CEK"
+
+const wordsPerPage = 55; 
 const textArray = currentText.split(" ");
 const totalPages = Math.ceil(textArray.length / wordsPerPage);
 
@@ -41,37 +42,33 @@ const getPageText = (pageIndex) => {
   const end = start + wordsPerPage;
   return textArray.slice(start, end).join(" ");
 };
-//-----------------------------------------
+
 const formatTime = (millis) => {
   const minutes = Math.floor(millis / 60000);
   const seconds = Math.floor((millis % 60000) / 1000);
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
-//-----------------------------------------
+
 const togglePlayPause = async () => {
   if (isPlaying) {
-    // Eğer zaten çalıyorsa, durdur.
     setIsPlaying(false);
     await sound.pauseAsync();
   } else {
     if (!sound) {
-      // Eğer ses yüklenmemişse, önce yükle.
-      await loadSound(); // Ses yükleniyor
+      await loadSound(); 
     } else {
-      // Ses bitti mi? Eğer bitti ise, pozisyonu sıfırla.
       if (position >= duration || position === 0) {
-        await sound.setPositionAsync(0); // Pozisyonu sıfırla
-        setPosition(0); // Slider'ı sıfırla
+        await sound.setPositionAsync(0); 
+        setPosition(0); 
       }
     }
 
-    // Oynatmaya başla
     setIsPlaying(true);
     await sound.playAsync();
   }
 };
 
-//-----------------------------------------
+
 const loadSound = async () => {
   const { sound, status } = await Audio.Sound.createAsync(
     currentSound,
@@ -81,7 +78,6 @@ const loadSound = async () => {
         setDuration(playbackStatus.durationMillis || 0);
         setPosition(playbackStatus.positionMillis || 0);
         
-        // Eğer ses bitti ise, durumu sıfırlıyoruz
         if (playbackStatus.didJustFinish) {
           setIsPlaying(false);
           setPosition(0);
@@ -89,23 +85,23 @@ const loadSound = async () => {
       }
     }
   );
-  setSound(sound); // Ses nesnesini state'e atıyoruz
+  setSound(sound); 
 };
 
-//-----------------------------------------
+
 useEffect(() => {
   const soundData = route.params.data.engSound;
   console.log("Data:", soundData);
 }, []);
-//-----------------------------------------
+
 const changeLanguage = async (lang) => {
   if (sound) {
-    await sound.unloadAsync(); // Unload the current sound
-    setSound(null); // Reset the sound instance
+    await sound.unloadAsync(); 
+    setSound(null); 
   }
-  setPosition(0); // Reset slider position
-  setDuration(0); // Reset duration
-  setIsPlaying(false); // Ensure the playback state is reset
+  setPosition(0); 
+  setDuration(0); 
+  setIsPlaying(false); 
 
   if (lang === 'English') {
     setCurrentTitle(engTitle);
@@ -116,39 +112,39 @@ const changeLanguage = async (lang) => {
     setCurrentText(trText);
     setCurrentSound(trSound);
   }
-  setLanguage(lang); // Update the selected language
-  setUseModel(false); // Close the modal
+  setLanguage(lang); 
+  setUseModel(false); 
 };
 
-//-----------------------------------------
+
 useFocusEffect(
   React.useCallback(() => {
     return () => {
       if (sound) {
-        sound.unloadAsync(); // Unload the sound when navigating away
+        sound.unloadAsync(); 
       }
     };
   }, [sound])
 );
-//-----------------------------------------
+
 useEffect(() => {
   return sound ? () => {sound.unloadAsync();}
                : undefined;}, 
   [sound]);
-//-----------------------------------------
+
 
 
   return (
-    <View className="flex-[9] border-2 border-red-600 w-[100%] items-center justify-end">
+    <View className="flex-[9] w-[100%] items-center justify-end">
           
   
-      <BlurView className={`w-[100%] h-[60%] border-2 border-rose-400  rounded-t-2xl 
-                            ${isDarkMode ? "bg-black/70" : "bg-yellow-400"}`}>
+      <BlurView className={`w-[100%] h-[60%] border-2 border-slate-50 rounded-t-2xl 
+                            ${isDarkMode ? "bg-black/70" : "bg-amber-400"}`}>
 
               {/* Title Container */}
-              <View className="flex-[1] w-[100%] bg-blue-600 rounded-t-2xl items-center justify-center border-2 border-blue-700">
+              <View className="flex-[1] w-[100%] rounded-t-2xl items-center justify-center ">
 
-                  <Text className={`flex-[1] w-[100%] border-2 rounded-t-2xl border-orange-500 text-left pl-1 pt-1 text-[14px] font-bold 
+                  <Text className={`flex-[1] italic underline w-[100%] rounded-t-2xl text-left pl-1 pt-2 text-[14px] font-bold 
                                     ${isDarkMode ? "text-gray-200" : "text-gray-900"}`} 
                         numberOfLines={1} 
                         ellipsizeMode='tail'>{currentTitle}
@@ -158,14 +154,12 @@ useEffect(() => {
 
 
               {/* Text Container */}
-              <View className="flex-[5] w-[100%] bg-green-300 items-center justify-center border-2 border-lime-300">
+              <View className="flex-[5] w-[100%] items-center justify-center">
                 
                     {/* Text */}
-                    <View className="flex-[6] border-2 w-[100%] items-center justify-center">
-                        <Text  className={`text-[15px] font-bold px-[5px] border-2 bg-red-500 w-[100%] h-[100%]
+                    <View className="flex-[6] w-[100%] items-center justify-center">
+                        <Text  className={`text-[15px] italic font-bold px-[5px] w-[100%] h-[100%]
                                           ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}
-                                          // numberOfLines={9}
-                                          // ellipsizeMode='tail'
                                           >{getPageText(currentPage)}
                         </Text>
 
@@ -173,7 +167,7 @@ useEffect(() => {
 
 
                     {/* Right/Left Buttons */}
-                    <View className="flex-[1] flex-row border-2 w-[100%] items-center justify-between px-[2px]">
+                    <View className="flex-[1] flex-row w-[100%] items-center justify-between px-2">
               
                             {/* Previous Page */}
                             <TouchableOpacity   
@@ -199,15 +193,16 @@ useEffect(() => {
 
 
               {/* Sound Container */}
-              <View className="flex-[2] w-[100%] bg-white items-center justify-center border-2 border-violet-800">
+              <View className="flex-[2] w-[100%] items-center justify-center">
 
                     {/* Slider */}
-                    <View style={{flex:1, width:"100%", borderWidth:2, borderColor:"blue",alignItems:"center", justifyContent:"center"}}>
+                    <View className="flex-[1] w-[100%] items-center justify-center">
                     <Slider
-                        style={{ width: '90%', borderWidth: 2, padding: 2 }}
+                        style={{width: '90%', }}
                         minimumValue={0}
                         maximumValue={duration}
                         value={position}
+                        maximumTrackTintColor="#ffffff"
                         disabled={!sound} 
                         onSlidingComplete={async (value) => {
                           await sound.setPositionAsync(value);
@@ -215,37 +210,36 @@ useEffect(() => {
                       />
 
 
-                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
-                        <Text>{formatTime(position)}</Text>
-                        <Text>{formatTime(duration)}</Text>
+                      <View className="w-[90%] px-2 flex-row justify-between">
+                        <Text className={isDarkMode ? "text-gray-200" : "text-gray-900"}>{formatTime(position)}</Text>
+                        <Text className={isDarkMode ? "text-gray-200" : "text-gray-900"}>{formatTime(duration)}</Text>
                       </View>
 
                     </View>
 
 
                     {/* Sound Buttons */}
-                    <View style={{flex:1, paddingVertical:2, width:"100%", flexDirection:"row", borderWidth:2, borderColor:"red",alignItems:"center", justifyContent:"space-evenly"}}>
+                    <View className="flex-[1] py-1 w-[100%] flex-row items-center justify-evenly">
                 
 
                         {/* 10 Second Left Button */}
                         <TouchableOpacity 
                           onPress={async () => {
-                            const newPosition = Math.max(position - 10000, 0); // 10 seconds back, but no less than 0
-                            await sound.setPositionAsync(newPosition); // Set new position
-                            setPosition(newPosition); // Update the position state
+                            const newPosition = Math.max(position - 10000, 0); 
+                            await sound.setPositionAsync(newPosition); 
+                            setPosition(newPosition); 
                           }}
                         >
-                          <Image style={{ width: 35, height: 35 }} source={isDarkMode ? blueLeftButton : pinkLeftButton} />
+                          <Image className="w-[35px] h-[35px]" source={isDarkMode ? blueLeftButton : pinkLeftButton} />
                         </TouchableOpacity>
 
                         
                         {/* Play/Pause */}
                         <TouchableOpacity onPress={() => togglePlayPause()}>
-                              <Image 
-                                source={isDarkMode 
-                                  ? (isPlaying ? bluePauseButton : bluePlayButton) 
-                                  : (isPlaying ? pinkPauseButton : pinkPlayButton)} 
-                                style={{ width: 45, height: 45 }} 
+                              <Image className="w-[45px] h-[45px]"
+                                     source={isDarkMode 
+                                        ? (isPlaying ? bluePauseButton : bluePlayButton) 
+                                        : (isPlaying ? pinkPauseButton : pinkPlayButton)}                                
                               />
                         </TouchableOpacity>
 
@@ -253,53 +247,54 @@ useEffect(() => {
                         {/* 10 Second Right Button */}
                         <TouchableOpacity 
                           onPress={async () => {
-                            const newPosition = Math.min(position + 10000, duration); // 10 seconds forward, but no more than the duration
-                            await sound.setPositionAsync(newPosition); // Set new position
-                            setPosition(newPosition); // Update the position state
+                            const newPosition = Math.min(position + 10000, duration); 
+                            await sound.setPositionAsync(newPosition); 
+                            setPosition(newPosition); 
                           }}
                         >
-                          <Image style={{ width: 35, height: 35 }} source={isDarkMode ? blueRightButton : pinkRightButton} />
+                          <Image className="w-[35px] h-[35px]" source={isDarkMode ? blueRightButton : pinkRightButton} />
                         </TouchableOpacity>
 
 
                         {/* Model Open Button */}
-                        <TouchableOpacity style={{borderWidth:2, 
-                                                  backgroundColor:"green", 
-                                                  borderRadius:5,}}
-                                          onPress={()=> setUseModel(true)}>
-                            <Text>Change</Text>
+                        <TouchableOpacity onPress={()=> setUseModel(true)}>
+                            <Image className="w-[35px] h-[35px]" source={languagesBook} />
                         </TouchableOpacity>
 
 
                         {/* Model Container*/}
                         <Modal visible={useModel} animationType="slide" transparent={true}>
-                          <View style={{flex:1, paddingVertical:10, backgroundColor:"red", borderWidth:2, borderColor:"yellow", alignItems:"center", justifyContent:"center"}}>
+                          <View className="flex-[1] py-2.5 bg-red-500 items-center justify-center">
 
                               {/* Model Close Button */}
-                              <View style={{flex:1,marginBottom:10, borderWidth:2, borderColor:"blue", width:"95%",alignItems:"center", justifyContent:"center"}}>
+                              <View className="flex-[1] w-[95%] mb-2.5 items-center justify-center">
 
-                                <TouchableOpacity 
-                                style={{borderWidth:2, backgroundColor:"white", borderRadius:5, width:"70%",alignItems:"center", justifyContent:"center"}}
-                                onPress={() => setUseModel(false)}>
-                                  <Text>Close</Text>
-                                </TouchableOpacity>
+                              <TouchableOpacity className="w-[70%] border-2 bg-green-500 border-white rounded items-center justify-center p-1.5"
+                                                onPress={() => setUseModel(false)}>
+                                 <Text className="text-[13px] text-center font-bold text-white">Close</Text>
+                              </TouchableOpacity>
+
+
 
                               </View>
 
 
                               {/* Model Languages */}
-                              <View 
-                              style={{flex:9, paddingVertical:10, borderWidth:2, borderColor:"blue",width:"95%",alignItems:"center",}}>
+                              <View className="flex-[9] bg-yellow-500 border-2 border-white rounded-lg p-2.5 w-[95%] items-center">
                                                           
                                 
-                                    <Pressable style={{ borderWidth: 2, margin: 5 }} onPress={() => changeLanguage('English')}>
-                                      <Text style={{ fontSize: 25, fontWeight: "bold", color: "#ffffff" }}>English</Text>
-                                    </Pressable>
+                                    <TouchableOpacity className="m-1.25" onPress={() => changeLanguage('English')}>
+                                        <Text style={{textShadowColor: "#fbcfe8",textShadowOffset: { height: 2 }, textShadowRadius: 2}}
+                                              className="text-[30px] font-bold text-blue-800">English
+                                        </Text>
+                                    </TouchableOpacity>
 
                                 
-                                    <Pressable style={{ borderWidth: 2, margin: 5 }} onPress={() => changeLanguage('Turkish')}>
-                                      <Text style={{ fontSize: 25, fontWeight: "bold", color: "#ffffff" }}>Turkish</Text>
-                                    </Pressable>
+                                    <TouchableOpacity className="m-1.25" onPress={() => changeLanguage('Turkish')}>
+                                        <Text style={{textShadowColor: "#fbcfe8",textShadowOffset: { height: 2 }, textShadowRadius: 2}}
+                                              className="text-[30px] font-bold text-pink-600">Turkish
+                                        </Text>
+                                    </TouchableOpacity>
 
                               </View>
 

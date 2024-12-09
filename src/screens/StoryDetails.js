@@ -6,10 +6,8 @@ import {Header, StoryComponent} from "../components/index"
 
 
 const StoryDetails = ({route}) => {
-//----------------------------------------
+
 const image = route.params?.data?.image;
-//----------------------------------------
-  // const image = route.params.data.image
 
 
   return (
@@ -17,12 +15,11 @@ const image = route.params?.data?.image;
 
       <StatusBar style="auto" />
 
-      <SafeAreaView className="border-2 border-lime-500 flex-1 items-center justify-center">
+      <SafeAreaView className="flex-1 items-center justify-center">
          
           {/* Header */}
           <Header />
-
-          
+         
           {/* Story */}
           <StoryComponent route={route} />
 
