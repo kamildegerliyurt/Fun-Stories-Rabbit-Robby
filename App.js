@@ -4,11 +4,9 @@ import Welcome from './src/screens/Welcome'
 import StoryHome from './src/screens/StoryHome'
 import StoryDetails from './src/screens/StoryDetails'
 
+import { ThemeProvider } from "./src/constants/ThemeContext"
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
-import { ThemeProvider } from "./src/constants/ThemeContext"
-
 
 const Stack = createNativeStackNavigator();
 
