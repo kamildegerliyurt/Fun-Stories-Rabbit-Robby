@@ -4,14 +4,17 @@ import data from '../constants/data'
 import Animated, { BounceInDown, PinwheelOut } from 'react-native-reanimated';
 
 
-// import mobileAds,{
-//    BannerAd, 
-//    BannerAdSize, 
-//    TestIds, 
-//    useInterstitialAd 
-//   } from 'react-native-google-mobile-ads';
+import mobileAds,{
+   BannerAd, 
+   BannerAdSize, 
+   TestIds, 
+   useInterstitialAd 
+  } from 'react-native-google-mobile-ads';
   
-// const adUnitIdBanner = __DEV__ ? TestIds.ADAPTIVE_BANNER : "ca-app-pub-2456383216001206~3229466473";
+// const adUnitIdBanner = __DEV__ ? TestIds.ADAPTIVE_BANNER : "ca-app-pub-2456383216001206~3229466473";  // Uygulama Kimliği 
+const adUnitIdBanner = __DEV__ ? TestIds.ADAPTIVE_BANNER : "ca-app-pub-2456383216001206/7149925417";  //Reklam Birimi: Banner
+
+// const adUnitIdBanner = "ca-app-pub-2456383216001206/7149925417";  // "Test" aşamasından sonra böylemi kullanmam gerekiyor??
 
 
 const StoryItem = (props) => {
@@ -37,7 +40,7 @@ const HomePagePinwheelOut = PinwheelOut;
   return (
     <View className="flex-[9] w-[100%] items-center justify-center">
       
-      {/* <BannerAd unitId={adUnitIdBanner} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}/> */}
+      <BannerAd unitId={adUnitIdBanner} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}/>
 
       <FlatList 
         data={productData}
@@ -75,7 +78,7 @@ const HomePagePinwheelOut = PinwheelOut;
 
         />
 
-        {/* <BannerAd unitId={adUnitIdBanner} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}/> */}
+        <BannerAd unitId={adUnitIdBanner} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}/>
         
     </View>
   )
