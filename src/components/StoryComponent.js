@@ -19,6 +19,15 @@ import {
   languagesBook,
 } from "../constants/images"
 
+// import mobileAds,{
+//   BannerAd, 
+//   BannerAdSize, 
+//   TestIds, 
+//   useInterstitialAd 
+//  } from 'react-native-google-mobile-ads';
+ 
+// const adUnitIdBanner = __DEV__ ? TestIds.ADAPTIVE_BANNER : "ca-app-pub-2456383216001206~3229466473";
+
 const StoryComponent = ({route}) => {
 const { engTitle, trTitle, engSound, trSound, engText, trText, } = route.params.data;
 const [useModel, setUseModel]= useState(false);
@@ -91,7 +100,6 @@ const loadSound = async () => {
 
 useEffect(() => {
   const soundData = route.params.data.engSound;
-  console.log("Data:", soundData);
 }, []);
 
 const changeLanguage = async (lang) => {
@@ -141,7 +149,7 @@ useEffect(() => {
       <BlurView className={`w-[100%] h-[60%] border-2 border-slate-50 rounded-t-2xl 
                             ${isDarkMode ? "bg-black/70" : "bg-amber-400"}`}>
 
-              {/* Title Container */}
+              
               <View className="flex-[1] w-[100%] rounded-t-2xl items-center justify-center ">
 
                   <Text className={`flex-[1] italic underline w-[100%] rounded-t-2xl text-left pl-1 pt-2 text-[14px] font-bold 
@@ -153,10 +161,10 @@ useEffect(() => {
               </View>
 
 
-              {/* Text Container */}
+              
               <View className="flex-[5] w-[100%] items-center justify-center">
                 
-                    {/* Text */}
+                   
                     <View className="flex-[6] w-[100%] items-center justify-center">
                         <Text  className={`text-[15px] italic font-bold px-[5px] w-[100%] h-[100%]
                                           ${isDarkMode ? "text-gray-200" : "text-gray-900"}`}
@@ -166,10 +174,8 @@ useEffect(() => {
                     </View>
 
 
-                    {/* Right/Left Buttons */}
                     <View className="flex-[1] flex-row w-[100%] items-center justify-between px-2">
-              
-                            {/* Previous Page */}
+                                  
                             <TouchableOpacity   
                               onPress={() => {if (currentPage > 0) setCurrentPage(currentPage - 1);}}>
                                 <Entypo name="arrow-bold-left" size={32} color={isDarkMode ? "#e5e7eb" : "#222831"}  />
@@ -179,8 +185,6 @@ useEffect(() => {
                               {`${currentPage + 1} / ${totalPages}`}
                             </Text>
                             
-
-                            {/* Next Page */}
                             <TouchableOpacity 
                               onPress={() => {if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);}}>
                               <Entypo name="arrow-bold-right" size={32} color={isDarkMode ? "#e5e7eb" : "#222831"} />
@@ -192,10 +196,10 @@ useEffect(() => {
               </View>
 
 
-              {/* Sound Container */}
+             
               <View className="flex-[2] w-[100%] items-center justify-center">
 
-                    {/* Slider */}
+                   
                     <View className="flex-[1] w-[100%] items-center justify-center">
                     <Slider
                         style={{width: '90%', }}
@@ -218,11 +222,10 @@ useEffect(() => {
                     </View>
 
 
-                    {/* Sound Buttons */}
+                    
                     <View className="flex-[1] py-1 w-[100%] flex-row items-center justify-evenly">
                 
-
-                        {/* 10 Second Left Button */}
+             
                         <TouchableOpacity 
                           onPress={async () => {
                             const newPosition = Math.max(position - 10000, 0); 
@@ -234,7 +237,7 @@ useEffect(() => {
                         </TouchableOpacity>
 
                         
-                        {/* Play/Pause */}
+                     
                         <TouchableOpacity onPress={() => togglePlayPause()}>
                               <Image className="w-[45px] h-[45px]"
                                      source={isDarkMode 
@@ -244,7 +247,7 @@ useEffect(() => {
                         </TouchableOpacity>
 
 
-                        {/* 10 Second Right Button */}
+                      
                         <TouchableOpacity 
                           onPress={async () => {
                             const newPosition = Math.min(position + 10000, duration); 
@@ -256,31 +259,31 @@ useEffect(() => {
                         </TouchableOpacity>
 
 
-                        {/* Model Open Button */}
+                       
                         <TouchableOpacity onPress={()=> setUseModel(true)}>
                             <Image className="w-[35px] h-[35px]" source={languagesBook} />
                         </TouchableOpacity>
 
 
-                        {/* Model Container*/}
+                       
                         <Modal visible={useModel} animationType="slide" transparent={true}>
-                          <View className="flex-[1] py-2.5 bg-red-500 items-center justify-center">
+                          <View className="flex-[1] py-2.5 bg-black/70 items-center justify-center">
 
-                              {/* Model Close Button */}
+                             
                               <View className="flex-[1] w-[95%] mb-2.5 items-center justify-center">
 
-                              <TouchableOpacity className="w-[70%] border-2 bg-green-500 border-white rounded items-center justify-center p-1.5"
-                                                onPress={() => setUseModel(false)}>
-                                 <Text className="text-[13px] text-center font-bold text-white">Close</Text>
-                              </TouchableOpacity>
+                                <TouchableOpacity className="w-[70%] border-2 bg-green-500 border-white rounded items-center justify-center p-1.5"
+                                                  onPress={() => setUseModel(false)}>
+                                  <Text className="text-[13px] text-center font-bold text-white">Close</Text>
+                                </TouchableOpacity>
 
-
-
+                            
                               </View>
 
 
-                              {/* Model Languages */}
+                              
                               <View className="flex-[9] bg-yellow-500 border-2 border-white rounded-lg p-2.5 w-[95%] items-center">
+                                      
                                                           
                                 
                                     <TouchableOpacity className="m-1.25" onPress={() => changeLanguage('English')}>
@@ -298,6 +301,7 @@ useEffect(() => {
 
                               </View>
 
+                              {/* <BannerAd unitId={adUnitIdBanner} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}/> */}
 
 
                           </View>

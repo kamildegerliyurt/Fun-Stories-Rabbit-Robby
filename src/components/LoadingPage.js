@@ -13,7 +13,6 @@ import Animated,{
 
 const LoadingPage = () => {
 
-//Ekranın dışından gelmeye başlasın
 const translationX = useSharedValue(-100)
 
 const animatedStyles = useAnimatedStyle(()=> ({
@@ -25,7 +24,6 @@ useEffect(() => {
    withTiming(200, {duration:1000, easing: Easing.linear})
  )
 }, [])
-
 
 
   return (

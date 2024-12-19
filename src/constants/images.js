@@ -1,9 +1,7 @@
-// //-----------------------------------------------LoadingIcon
-const rabbitAnimated = require("../../assets/images/loadingPageIcons/rabbitAnimated.gif")
 const flyCat = require("../../assets/images/loadingPageIcons/flyCat.gif")
-// //-----------------------------------------------WelcomePage
+
 const welcomeKids = require("../../assets/images/welcomePageIcons/welcomeKids.jpg")
-// //-----------------------------------------------HomeIcon
+
 const storyRabbit1 = require("../../assets/images/homePageIcons/storyRabbit1.jpg")
 const storyRabbit2 = require("../../assets/images/homePageIcons/storyRabbit2.jpg")
 const storyRabbit3 = require("../../assets/images/homePageIcons/storyRabbit3.jpg")
@@ -14,9 +12,9 @@ const storyRabbit7 = require("../../assets/images/homePageIcons/storyRabbit7.jpg
 const storyRabbit8 = require("../../assets/images/homePageIcons/storyRabbit8.jpg")
 const storyRabbit9 = require("../../assets/images/homePageIcons/storyRabbit9.jpg")
 const storyRabbit10 = require("../../assets/images/homePageIcons/storyRabbit10.jpg")
-// //-----------------------------------------------DetailsIcon
+
 const backButton = require("../../assets/images/detailsPageIcons/backButton.png")
-// //-----------------------------------------------Buttons
+
 const pinkPlayButton = require("../../assets/images/buttonIcons/pinkPlayButton.png")
 const pinkPauseButton = require("../../assets/images/buttonIcons/pinkPauseButton.png")
 const pinkRightButton = require("../../assets/images/buttonIcons/pinkRightButton.png")
@@ -26,11 +24,10 @@ const bluePauseButton = require("../../assets/images/buttonIcons/bluePauseButton
 const blueRightButton = require("../../assets/images/buttonIcons/blueRightButton.png")
 const blueLeftButton = require("../../assets/images/buttonIcons/blueLeftButton.png")
 const languagesBook = require("../../assets/images/buttonIcons/languagesBook.png")
-// //-----------------------------------------------
+
 
 
 export{
-    rabbitAnimated,
     flyCat,
     welcomeKids,
     storyRabbit1,

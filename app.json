@@ -2,7 +2,7 @@
   "expo": {
     "name": "FunStoriesRabbitRobby",
     "slug": "FunStoriesRabbitRobby",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FB9EAE"
     },
     "ios": {
       "supportsTablet": true
@@ -18,11 +18,27 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#FB9EAE"
+      },
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID"
+      ],
+      "package": "com.degerliyurt.FunStoriesRabbitRobby",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-tracking-transparency"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "0da5cc88-8134-4891-a32c-d2e308db0f67"
+      }
     }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-2456383216001206~3229466473"
   }
 }

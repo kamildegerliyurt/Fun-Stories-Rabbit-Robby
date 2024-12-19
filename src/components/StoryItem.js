@@ -1,8 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FlatList, Text, View, RefreshControl, Pressable, Image } from 'react-native'
-
 import data from '../constants/data'
 import Animated, { BounceInDown, PinwheelOut } from 'react-native-reanimated';
+
+
+// import mobileAds,{
+//    BannerAd, 
+//    BannerAdSize, 
+//    TestIds, 
+//    useInterstitialAd 
+//   } from 'react-native-google-mobile-ads';
+  
+// const adUnitIdBanner = __DEV__ ? TestIds.ADAPTIVE_BANNER : "ca-app-pub-2456383216001206~3229466473";
 
 
 const StoryItem = (props) => {
@@ -27,6 +36,8 @@ const HomePagePinwheelOut = PinwheelOut;
 
   return (
     <View className="flex-[9] w-[100%] items-center justify-center">
+      
+      {/* <BannerAd unitId={adUnitIdBanner} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}/> */}
 
       <FlatList 
         data={productData}
@@ -47,13 +58,11 @@ const HomePagePinwheelOut = PinwheelOut;
                                   exiting={HomePagePinwheelOut}
                                   onPress={() => props.onItemPress(item)}>
 
-                    {/* Resim gösterimi */}
                     <View className="w-[100%] rounded-[15px]">
                      <Image  className="w-[100%] h-[190px] object-cover rounded-[15px]" source={image} />
                     </View>
 
 
-                    {/* Text */}
                     <View className="flex-[1] w-[100%] items-center justify-center my-1">
                       <Text style={{textShadowColor: "#f0fdfa",textShadowOffset: { height: 1 }, textShadowRadius: 2}}
                             className="text-[11px] font-bold text-center p-[2px]" numberOfLines={2} ellipsizeMode='tail'>{title}</Text>
@@ -65,6 +74,9 @@ const HomePagePinwheelOut = PinwheelOut;
 
 
         />
+
+        {/* <BannerAd unitId={adUnitIdBanner} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}/> */}
+        
     </View>
   )
 }
